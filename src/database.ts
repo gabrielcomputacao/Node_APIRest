@@ -1,4 +1,4 @@
-
+import 'dotenv/config'
 import { knex as setupKnex, Knex } from 'knex'
 
 /* 
@@ -7,10 +7,14 @@ import { knex as setupKnex, Knex } from 'knex'
     Consegue criar um historico de alterações no banco de dados
 */
 
+if (!process.env.DATABASE_URL) {
+    throw new Error('database_url not found.')
+}
+
 export const config: Knex.Config = {
     client: 'sqlite',
     connection: {
-        filename: './db/app.db'
+        filename: process.env.DATABASE_URL,
     },
     useNullAsDefault: true,
     migrations: {
