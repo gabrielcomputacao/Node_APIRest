@@ -7,6 +7,14 @@ import { CheckSessionIdExists } from "../middlewares/check-session-id-exist";
 //  todo: Cookies -> formas da gente manter o contexto entre requisições
 
 export async function transactionsRoutes(app: FastifyInstance) {
+  /* PreHandler global é executado em todas as rotas dentro desse modulo, 
+    como essa funcao é exportada o prehandler é executado dentro de todas essas rotas,
+    caso crie um outro arquivo de rotas esses prehandler nao é executado
+ */
+  app.addHook("preHandler", async (request, response) => {
+    console.log("prehandler global");
+  });
+
   app.get(
     "/",
     // todo: preHandler sao funcoes que sao executadas antes de executar o handler, para verificações ou autenticações
@@ -42,9 +50,8 @@ export async function transactionsRoutes(app: FastifyInstance) {
 
       const { sessionId } = request.cookies;
 
-      /* 
-        funcao first informa ao knex que é apenas um dado que vai ser retorna, assim ele nao retorna um array
-    */
+      // funcao first informa ao knex que é apenas um dado que vai ser retorna, assim ele nao retorna um array
+
       const transaction = await knex("transactions")
         .where("id", id)
         .andWhere("session_id", sessionId)
