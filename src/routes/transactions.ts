@@ -127,8 +127,8 @@ export async function transactionsRoutes(app: FastifyInstance) {
   });
 
   /* rota de TESTE */
-  app.get("/hello", async () => {
-    /* 
+  /* app.get("/hello", async () => {
+    
                inserção
            
             const transaction = await knex('transactions').insert({
@@ -137,10 +137,10 @@ export async function transactionsRoutes(app: FastifyInstance) {
                amount: 1000,
              }).returning('*') 
              
-             */
+             
 
     const transactions = await knex("transactions").select("*");
 
     return transactions;
-  });
+  }); */
 }
